@@ -17,8 +17,8 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 */
 
-#ifndef __SETTINGS_H__
-#define __SETTINGS_H__
+#ifndef __ENGINES_H__
+#define __ENGINES_H__
 
 #define MIN_ENGINE_POWER 150
 #define MAX_ENGINE_POWER 255

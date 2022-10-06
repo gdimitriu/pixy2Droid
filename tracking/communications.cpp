@@ -19,7 +19,7 @@
 
 #include <Arduino.h>
 #include <NeoSWSerial.h>
-#include <PinChangeInt.h>
+#include <EnableInterrupt.h>
 #include "communications.h"
 #include "tracking.h"
 #include "engines.h"
@@ -46,10 +46,12 @@ void neoSSerial1ISR()
 
 void initCommunications() {
   BTSerial.begin(38400);
-  attachPinChangeInterrupt(RxD, neoSSerial1ISR, CHANGE); 
+  enableInterrupt(RxD, neoSSerial1ISR, CHANGE); 
 }
 
 static void makeCleanup() {
+  BTSerial.println("OK");
+  BTSerial.flush();
   for (index = 0; index < 20; index++) {
     inData[index] = '\0';
   }
@@ -58,18 +60,18 @@ static void makeCleanup() {
 }
 
 void printMenuOnBLE() {
-  BTSerial.println( "MENU:\n" );
-  BTSerial.println( "h# print this menu\n");
-  BTSerial.println( "S# Start\n" );
-  BTSerial.println( "s# Stop\n" );
-  BTSerial.println( "T# tracking on\n");
-  BTSerial.println( "t# tracking off\n");
-  BTSerial.println( "L# lamp on/off\n");
-  BTSerial.println( "E# engine pan tracking on/off\n");
-  BTSerial.println( "pxx# horizontal position of camera\n");
-  BTSerial.println( "Pxx# Kp\n");
-  BTSerial.println( "Ixx# Ki\n");
-  BTSerial.println( "Dxx# Kd\n");
+  BTSerial.println( "MENU:" );
+  BTSerial.println( "h# print this menu");
+  BTSerial.println( "S# Start" );
+  BTSerial.println( "s# Stop" );
+  BTSerial.println( "T# tracking on");
+  BTSerial.println( "t# tracking off");
+  BTSerial.println( "L# lamp on/off");
+  BTSerial.println( "E# engine pan tracking on/off");
+  BTSerial.println( "pxx# horizontal position of camera");
+  BTSerial.println( "Pxx# Kp");
+  BTSerial.println( "Ixx# Ki");
+  BTSerial.println( "Dxx# Kd");
 }
 
 
@@ -87,7 +89,9 @@ static boolean isValidNumber(char *data)
 static void makeMove(const char *data) {
   char *realData = data;
   if (strlen(realData) > 0) {
-     inData[strlen(realData)] = '\0';
+     realData[strlen(realData)-1] = '\0';
+  } else {
+     return;
   }
   if (strcmp(realData,"s") == 0) {
 #ifdef BLE_DEBUG_MODE
@@ -132,10 +136,10 @@ static void makeMove(const char *data) {
       BTSerial.println("Engine tracking off");
 #endif
   }else if (strlen(realData) > 1) {
-    if (inData[0] == 'p') {
+    if (realData[0] == 'p') {
       //remove p from command
       realData++;
-      if (!isValidNumber(inData)) {
+      if (!isValidNumber(realData)) {
         return;
       }
       tempIValue = atoi(realData);

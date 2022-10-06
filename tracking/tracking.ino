@@ -25,15 +25,21 @@ void setup()
 {
 #ifdef SERIAL_DEBUG_MODE
   Serial.begin(38400);
+  Serial.println("Starting...");
 #endif
   initCommunications();
+#ifdef SERIAL_DEBUG_MODE
+  Serial.println("End 0");
+#endif  
   initializetEngines();
+  
   initTracking();
-    
+#ifdef SERIAL_DEBUG_MODE
+  Serial.print("End 2");
+#endif    
 #ifdef BLE_DEBUG_MODE
   printMenuOnBLE();
 #endif
-
 }
 
 
