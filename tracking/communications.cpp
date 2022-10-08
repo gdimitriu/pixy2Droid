@@ -49,9 +49,7 @@ void initCommunications() {
   enableInterrupt(RxD, neoSSerial1ISR, CHANGE); 
 }
 
-static void makeCleanup() {
-  BTSerial.println("OK");
-  BTSerial.flush();
+static void makeCleanup() {  
   for (index = 0; index < 20; index++) {
     inData[index] = '\0';
   }
@@ -59,9 +57,14 @@ static void makeCleanup() {
   inChar ='0';
 }
 
+static void sendOK() {
+  BTSerial.println("OK");
+  BTSerial.flush();
+}
+
 void printMenuOnBLE() {
   BTSerial.println( "MENU:" );
-  BTSerial.println( "h# print this menu");
+  BTSerial.println( "h# print menu");
   BTSerial.println( "S# Start" );
   BTSerial.println( "s# Stop" );
   BTSerial.println( "T# tracking on");
@@ -69,9 +72,12 @@ void printMenuOnBLE() {
   BTSerial.println( "L# lamp on/off");
   BTSerial.println( "E# engine pan tracking on/off");
   BTSerial.println( "pxx# horizontal position of camera");
-  BTSerial.println( "Pxx# Kp");
-  BTSerial.println( "Ixx# Ki");
-  BTSerial.println( "Dxx# Kd");
+  BTSerial.println( "Pxx# set Kp");
+  BTSerial.println( "P# get Kp");
+  BTSerial.println( "Ixx# set Ki");
+  BTSerial.println( "I# get Ki");
+  BTSerial.println( "Dxx# set Kd");
+  BTSerial.println( "D# get Kd");
 }
 
 
@@ -93,53 +99,74 @@ static void makeMove(const char *data) {
   } else {
      return;
   }
-  if (strcmp(realData,"s") == 0) {
+  if (strlen(realData) == 1) {
+    if (realData[0] == 's') {
 #ifdef BLE_DEBUG_MODE
-    BTSerial.println("stop");
+      BTSerial.println("stop");
 #endif
-    go(0,0);
-    isStopped = true;
-  } else if (strcmp(realData,"S") == 0) {
+      go(0,0);
+      isStopped = true;
+      sendOK();
+    } else if (realData[0] == 'S') {
 #ifdef BLE_DEBUG_MODE
-    BTSerial.println("Start");
+      BTSerial.println("Start");
 #endif
-    go(0,0);
-    isStopped = false;
-  } else if(strcmp(realData,"t") == 0) {
+      go(0,0);
+      isStopped = false;
+      sendOK();
+    } else if(realData[0] == 't') {
 #ifdef BLE_DEBUG_MODE
-    BTSerial.println("Tracking off");
+      BTSerial.println("Tracking off");
 #endif
-    isTracking = false;
-  } else if(strcmp(realData,"T") == 0) {
+      isTracking = false;
+      sendOK();
+    } else if( realData[0] == 'T') {
 #ifdef BLE_DEBUG_MODE
-    BTSerial.println("Tracking on");
+      BTSerial.println("Tracking on");
 #endif
-    lastError = 0;
-    integration = 0;
-    isTracking = true;
-  } else if (strcmp(realData,"h") == 0) {
-    printMenuOnBLE();
-  } else if (strcmp(realData,"L") == 0) {
-    if (isLampOn) {
-      // Turn off both laps upper and lower
-      pixy.setLamp(0, 0);
-    } else {
-      pixy.setLamp(1,1);
+      lastError = 0;
+      integration = 0;
+      isTracking = true;
+      sendOK();
+    } else if (realData[0] == 'h') {
+      printMenuOnBLE();
+    } else if (realData[0] =='L') {
+      if (isLampOn) {
+        // Turn off both laps upper and lower
+        pixy.setLamp(0, 0);
+      } else {
+        pixy.setLamp(1,1);
+      }
+      isLampOn = !isLampOn;
+      sendOK();
+    } else if (realData[0] == 'E') {
+      isEngineTracking = !isEngineTracking;
+#ifdef BLE_DEBUG_MODE
+      if (isEngineTracking)
+        BTSerial.println("Engine tracking on");
+      else
+        BTSerial.println("Engine tracking off");
+#endif
+      sendOK();
+    } else if ( realData[0] == 'P') {
+      BTSerial.println(Kp);
+      BTSerial.flush();
+      return;
+    } else if ( realData[0] == 'I') {
+      BTSerial.println(Ki);
+      BTSerial.flush();
+      return;
+    } else if ( realData[0] == 'D') {
+      BTSerial.println(Kd);
+      BTSerial.flush();
+      return;
     }
-    isLampOn = !isLampOn;
-  } else if (strcmp(realData,"E") == 0) {
-    isEngineTracking = !isEngineTracking;
-#ifdef BLE_DEBUG_MODE
-    if (isEngineTracking)
-      BTSerial.println("Engine tracking on");
-    else
-      BTSerial.println("Engine tracking off");
-#endif
-  }else if (strlen(realData) > 1) {
+  } else { //commands with data
     if (realData[0] == 'p') {
       //remove p from command
       realData++;
       if (!isValidNumber(realData)) {
+        sendOK();
         return;
       }
       tempIValue = atoi(realData);
@@ -147,6 +174,7 @@ static void makeMove(const char *data) {
           pixy.setServos(tempIValue,500);
           panServoPos = tempIValue;
       } else {
+        sendOK();
         return;
       }
     } else if (realData[0] == 'P') {
@@ -161,6 +189,7 @@ static void makeMove(const char *data) {
       integration = 0;
       tiltLoop.reset();
       pixy.setServos(panServoPos, tiltLoop.m_command);
+      sendOK();
     } else if (realData[0] == 'D') {
       //remove D from command
       realData++;
@@ -173,6 +202,7 @@ static void makeMove(const char *data) {
       integration = 0;
       tiltLoop.reset();
       pixy.setServos(panServoPos, tiltLoop.m_command);
+      sendOK();
     } else if (realData[0] == 'I') {
       //remove I from command
       realData++;
@@ -185,6 +215,7 @@ static void makeMove(const char *data) {
       integration = 0;
       tiltLoop.reset();
       pixy.setServos(panServoPos, tiltLoop.m_command);
+      sendOK();
     }
   }
 }

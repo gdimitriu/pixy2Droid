@@ -59,15 +59,15 @@ static void makeCleanup() {
 }
 
 void printMenuOnBLE() {
+  BTSerial.println("h# print menu");
   BTSerial.println("s# stop/start");
   BTSerial.println("l# lights on");
   BTSerial.println("a# autocalibration");
   BTSerial.println("L# left with turn90 delay");
   BTSerial.println("R# right with turn90 delay");
   BTSerial.println("txxx# set turn90");
-  BTSerial.println("sxxx,xxx# set servo up/left");
+  BTSerial.println("sxxx,xxx# set servo tilt,pan");
   BTSerial.println("vxxx# set the current power");
-  BTSerial.println("p# print menu");
 }
 
 
@@ -86,36 +86,39 @@ static void makeMove(char *data) {
   char *realData = data;
   if (strlen(realData) > 0) {
     realData[strlen(realData) -1] = '\0';
+  } else {
+    return;
   }
-  if (strcmp(realData,"s") == 0) {
-    isStopped = !isStopped;
+  if (strlen(realData) == 1) {
+    if (realData[0] == 's') {
+      isStopped = !isStopped;
 #ifdef BLE_DEBUG_MODE
-    if (isStopped)
-      BTSerial.println("stop");
-    else
-      BTSerial.println("start again");
+      if (isStopped)
+        BTSerial.println("stop");
+      else
+        BTSerial.println("start again");
 #endif
-    go(0,0);
-  } else if (strcmp(realData,"l") == 0) {
-    lightsOn != lightsOn;
-    if (lightsOn)
-      pixy.setLamp(1, 1);
-  } else if (strcmp(realData,"a") == 0) {
-    autocalibrationCamera();
-  } else if (strcmp(realData,"L") == 0) {
-    go(-currentPower,currentPower);
-    delay(turn90);
-    go(0,0);
-  } else if (strcmp(realData,"R") == 0) {
-    go(currentPower,-currentPower);
-    delay(turn90);
-    go(0,0);
-  } else if (strcmp(realData,"p") == 0) {
+      go(0,0);
+    } else if (realData[0] == 'l') {
+      lightsOn != lightsOn;
+      if (lightsOn)
+        pixy.setLamp(1, 1);
+    } else if (realData[0] == 'a') {
+      autocalibrationCamera();
+    } else if (realData[0] == 'L') {
+      go(-currentPower,currentPower);
+      delay(turn90);
+      go(0,0);
+    } else if (realData[0] == 'R') {
+      go(currentPower,-currentPower);
+      delay(turn90);
+      go(0,0);
+    } else if (realData[0] == 'h') {
 #ifdef BLE_DEBUG_MODE    
-    printMenuOnBLE();
+      printMenuOnBLE();
 #endif    
-  }
-  else if (strlen(realData) > 1) {
+    }
+  } else {
     if (realData[0] == 'v') {
         realData++;
         if (!isValidNumber(realData)) {
