@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/droid_control"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/movement_control"
+        android:layout_width="409dp"
+        android:layout_height="476dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/droid_commands"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- Kp -->
+        <LinearLayout
+            android:id="@+id/Kp_data"
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/Kd_data"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/KpText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:editable="false"
+                android:ems="5"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:singleLine="true"
+                android:text="@string/Kp_name_text"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/KpData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:contextClickable="true"
+                android:editable="true"
+                android:ems="5"
+                android:focusable="true"
+                android:gravity="center"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:singleLine="true"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <!-- Kd -->
+        <LinearLayout
+            android:id="@+id/Kd_data"
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/Ki_data"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Kp_data">
+
+            <EditText
+                android:id="@+id/KdText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:editable="false"
+                android:ems="5"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:singleLine="true"
+                android:text="@string/Kd_name_text"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/KdData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:editable="false"
+                android:ems="5"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:singleLine="true"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <!-- Ki -->
+        <LinearLayout
+            android:id="@+id/Ki_data"
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/tracking_settings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Kd_data">
+
+            <EditText
+                android:id="@+id/KiText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:editable="false"
+                android:ems="5"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:singleLine="true"
+                android:text="@string/Ki_name_text"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/KiData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:contextClickable="true"
+                android:editable="true"
+                android:ems="5"
+                android:focusable="true"
+                android:gravity="center"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:singleLine="true"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tracking_settings"
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/LampOnOff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Ki_data">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/TrackingOnOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tracking_name_text" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/EnginePanOnOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enginePanOnOff_name_text" />
+        </LinearLayout>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/LampOnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lampOnOff_name_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tracking_settings" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/droid_commands"
+        android:layout_width="409dp"
+        android:layout_height="154dp"
+        android:orientation="vertical"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movement_control">
+
+        <Button
+            android:id="@+id/droid_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/droid_start"
+            app:layout_constraintBottom_toTopOf="@+id/droid_load"
+            app:layout_constraintEnd_toStartOf="@id/droid_stop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/droid_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/droid_stop"
+            app:layout_constraintBottom_toTopOf="@+id/droid_disconnect"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/droid_start"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/droid_load"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/droid_load"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/droid_deploy"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <Button
+            android:id="@+id/droid_deploy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/droid_deploy"
+            app:layout_constraintStart_toEndOf="@id/droid_load"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/droid_disconnect" />
+
+        <Button
+            android:id="@+id/droid_disconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/droid_disconnect"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/droid_deploy"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

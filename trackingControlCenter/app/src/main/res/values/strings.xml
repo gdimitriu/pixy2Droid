@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">trackingControlCenter</string>
+    <string name="tracking_connection_ble">Tracking Connection BLE</string>
+    <string name="tracking_ble_name">Name</string>
+    <string name="tracking_ble_mac">MAC</string>
+    <string name="tracking_connection_menu">Connect to</string>
+    <string name="droid_disconnect">Disconnect</string>
+    <string name="droid_deploy">Deploy</string>
+    <string name="droid_load">Load</string>
+    <string name="droid_stop">Stop</string>
+    <string name="droid_start">Start</string>
+    <string name="Kp_name_text">Kp</string>
+    <string name="Kd_name_text">Kd</string>
+    <string name="Ki_name_text">Ki</string>
+    <string name="tracking_name_text">Tracking On/Off</string>
+    <string name="lampOnOff_name_text">Lamp On/Off</string>
+    <string name="enginePanOnOff_name_text">Engine Pan On/Off</string>
+</resources>
