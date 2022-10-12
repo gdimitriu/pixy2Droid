@@ -20,7 +20,7 @@
 #ifndef __COMMUNICATIONS_H__
 #define __COMMUNICATIONS_H__
 
-#define BLE_DEBUG_MODE true
+//#define BLE_DEBUG_MODE true
 #define SERIAL_DEBUG_MODE true
 
 void printMenuOnBLE();
