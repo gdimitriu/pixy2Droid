@@ -2,6 +2,7 @@
 
 Droid using pixy2 camera
 
+![droid](docs/pixy2_droid.jpg)
 
 ![Logical Connections](docs/logical_connections.jpeg)
 
