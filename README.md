@@ -40,6 +40,10 @@ Dxx# set Kd
 
 D# get Kd
 
+Android application:
+
+![tracking_droid](docs/tracking_droid.jpg)
+
 ## AutoMove
 
 Pixy2 camera is used to read bar codes from the ground, those code instruct the droid how to move.
