@@ -100,9 +100,11 @@ static void makeMove(char *data) {
 #endif
       go(0,0);
     } else if (realData[0] == 'l') {
-      lightsOn != lightsOn;
+      lightsOn = !lightsOn;
       if (lightsOn)
         pixy.setLamp(1, 1);
+      else
+        pixy.setLamp(0, 0);
     } else if (realData[0] == 'a') {
       autocalibrationCamera();
     } else if (realData[0] == 'L') {
@@ -114,9 +116,7 @@ static void makeMove(char *data) {
       delay(turn90);
       go(0,0);
     } else if (realData[0] == 'h') {
-#ifdef BLE_DEBUG_MODE    
       printMenuOnBLE();
-#endif    
     }
   } else {
     if (realData[0] == 'v') {

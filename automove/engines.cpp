@@ -25,7 +25,7 @@
 #define RIGHT_MOTOR_PIN1 10
 #define RIGHT_MOTOR_PIN2 11
 
-unsigned int turn90=1200; //1300 on carpet
+unsigned int turn90=1000; //1300 on carpet
 int currentPower = MAX_POWER_ENGINE;
 
 void initializetEngines() {

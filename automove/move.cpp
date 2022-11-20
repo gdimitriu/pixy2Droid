@@ -24,7 +24,7 @@
 #define MAX_CAMERA_BRIGHTNESS 255
 
 bool autoCalibrationDone = false;
-bool isStopped = false;
+bool isStopped = true;
 
 bool lightsOn = false;
 
@@ -67,10 +67,9 @@ void autocalibrationCamera() {
   bool upperLed = false;
   bool lastTry = false;
   
-  if (autoCalibrationDone) {
-    return;
-  }
+#ifdef BLE_DEBUG_MODE
   BTSerial.println("Autocalibration start ...");
+#endif  
   while(1) {
     res = pixy.line.getMainFeatures();
     //success get the barcode for forward move
@@ -204,7 +203,6 @@ static void moveBareCode() {
 }
 
 void move() {
-  autocalibrationCamera();
   switch(navigationType) {
     case 0:
       moveBareCode();
