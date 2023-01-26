@@ -3,6 +3,23 @@ https://github.com/kd8bxp/find_distance_with_pixycam/blob/master/distance_using_
 https://www.instructables.com/Using-a-PixyCam-CMUcam5-to-Get-Distance-of-a-Known/
 https://www.pyimagesearch.com/2015/01/19/find-distance-camera-objectmarker-using-python-opencv/
 https://tutorial.cytron.io/2015/08/28/colour-tracking-mobile-robot-pixy/
+https://medium.com/@butz0027/auto-tracking-mounting-plate-using-pixycam-2fee9877f862
+https://www.youtube.com/watch?v=391dXDjqzXA
 
 #utils
 https://www.mathopenref.com/similartriangles.html
+
+#pixy2 camera
+https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:line_api
+https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:general_api
+https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:pixy_regular_quick_start
+https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:pixy_zumo_howto
+https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:some_tips_on_generating_color_signatures_2
+https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:porting_guide
+http://www.cmucam.org/projects/cmucam5/wiki/Porting_Guide
+https://pixycam.com/downloads-pixy2/
+https://github.com/charmedlabs/pixy2
+https://resources.robokits.co.in/line-follower-robot-using-pixy2-arduino/
+https://resources.robokits.co.in/interfacing-pixy2-pixycam-arduino/
+
+
