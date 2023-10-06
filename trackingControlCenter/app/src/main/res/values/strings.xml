@@ -12,7 +12,7 @@
     <string name="Kp_name_text">Kp</string>
     <string name="Kd_name_text">Kd</string>
     <string name="Ki_name_text">Ki</string>
-    <string name="tracking_name_text">Tracking On/Off</string>
-    <string name="lampOnOff_name_text">Lamp On/Off</string>
-    <string name="enginePanOnOff_name_text">Engine Pan On/Off</string>
+    <string name="tracking_name_text">Tracking Off/On</string>
+    <string name="lampOnOff_name_text">Lamp Off/On</string>
+    <string name="enginePanOnOff_name_text">Engine Pan Off/On</string>
 </resources>

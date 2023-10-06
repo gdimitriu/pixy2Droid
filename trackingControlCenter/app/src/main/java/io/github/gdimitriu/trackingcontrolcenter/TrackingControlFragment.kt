@@ -105,12 +105,12 @@ class TrackingControlFragment : Fragment() {
                     if (trackingSettingsViewModel.currentTracking) {
                         if (sendOneWayCommandToDroid("T#\n")) {
                             Log.d(TAG, "Send Tracking on")
-                            trackingSettingsViewModel.currentTracking = false
+                            trackingSettingsViewModel.isChangedTracking = false
                         }
                     } else {
                         if (sendOneWayCommandToDroid("t#\n")) {
                             Log.d(TAG, "Send Tracking off")
-                            trackingSettingsViewModel.currentTracking = false
+                            trackingSettingsViewModel.isChangedTracking = false
                         }
                     }
                 }

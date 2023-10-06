@@ -28,7 +28,6 @@ private const val TAG = "TrackingConnectionBle"
 @SuppressLint("MissingPermission")
 class TrackingConnectionBleFragment : Fragment() {
 
-    private val REQUEST_ENABLE_BT = 1
     private val droidSettingsViewModel: TrackingSettingsViewModel by activityViewModels()
     private var bluetoothAdapter: BluetoothAdapter? = null
     private lateinit var bleRecyclerView: RecyclerView
@@ -59,11 +58,11 @@ class TrackingConnectionBleFragment : Fragment() {
         bleRecyclerView.adapter = adapter
         val bluetoothManager =
             context?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        bluetoothAdapter = bluetoothManager.getAdapter()
+        bluetoothAdapter = bluetoothManager.adapter
         if (bluetoothAdapter != null) {
             if (!bluetoothAdapter!!.isEnabled) {
                 val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
+                startActivityForResult(enableBtIntent, 1)
             } else {
                 val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
                 if (pairedDevices != null) {
