@@ -69,8 +69,8 @@ void printMenuOnBLE() {
   BTSerial.println( "s# Stop" );
   BTSerial.println( "T# tracking on");
   BTSerial.println( "t# tracking off");
-  BTSerial.println( "L# lamp on/off");
-  BTSerial.println( "E# engine pan tracking on/off");
+  BTSerial.println( "L1/0# lamp on/off");
+  BTSerial.println( "E1/0# engine pan tracking on/off");
   BTSerial.println( "pxx# horizontal position of camera");
   BTSerial.println( "Pxx# set Kp");
   BTSerial.println( "P# get Kp");
@@ -130,24 +130,6 @@ static void makeMove(const char *data) {
       sendOK();
     } else if (realData[0] == 'h') {
       printMenuOnBLE();
-    } else if (realData[0] =='L') {
-      if (isLampOn) {
-        // Turn off both laps upper and lower
-        pixy.setLamp(0, 0);
-      } else {
-        pixy.setLamp(1,1);
-      }
-      isLampOn = !isLampOn;
-      sendOK();
-    } else if (realData[0] == 'E') {
-      isEngineTracking = !isEngineTracking;
-#ifdef BLE_DEBUG_MODE
-      if (isEngineTracking)
-        BTSerial.println("Engine tracking on");
-      else
-        BTSerial.println("Engine tracking off");
-#endif
-      sendOK();
     } else if ( realData[0] == 'P') {
       BTSerial.println(Kp);
       BTSerial.flush();
@@ -215,6 +197,29 @@ static void makeMove(const char *data) {
       integration = 0;
       tiltLoop.reset();
       pixy.setServos(panServoPos, tiltLoop.m_command);
+      sendOK();
+    } else if (realData[0] =='L') {
+      realData++;
+      if ( realData[0] == '0' ) {
+        // Turn off both laps upper and lower
+        pixy.setLamp(0, 0);
+      } else if ( realData[0] == '1' ) {
+        pixy.setLamp(1,1);
+      }
+      sendOK();
+    } else if (realData[0] == 'E') {
+      realData++;
+      if ( realData[0] == '1' ) {
+        isEngineTracking = true;
+      } else if ( realData[0] == '0' ) {
+        isEngineTracking = false;
+      }
+#ifdef BLE_DEBUG_MODE
+      if (isEngineTracking)
+        BTSerial.println("Engine tracking on");
+      else
+        BTSerial.println("Engine tracking off");
+#endif
       sendOK();
     }
   }

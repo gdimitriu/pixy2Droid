@@ -27,7 +27,6 @@
 
 extern bool isStopped;
 extern bool isTracking;
-extern bool isLampOn;
 extern bool isEngineTracking;
 
 extern float Kp;

@@ -84,28 +84,34 @@ void tracking() {
       command = Kp*P+Ki*integration+Kd*D;
       if (panOffset < 0) {
         left = command;
-        if (left < MIN_ENGINE_POWER)
-          left = MIN_ENGINE_POWER;
         right = -command;
-        if (right > -MIN_ENGINE_POWER)
-          right = - MIN_ENGINE_POWER;      
       } else {
         left = - command;
-        if (left > - MIN_ENGINE_POWER)
-          left = - MIN_ENGINE_POWER;
         right = command;
-        if (right < MIN_ENGINE_POWER)
-          right = MIN_ENGINE_POWER;      
       }
       pixy.setServos(panServoPos, tiltLoop.m_command);
-      if (left < -MAX_ENGINE_POWER)
-        left = -MAX_ENGINE_POWER;
-      else if (left > MAX_ENGINE_POWER)
-        left = MAX_ENGINE_POWER;
-      if (right < -MAX_ENGINE_POWER)
-        right = -MAX_ENGINE_POWER;
-      else if (right > MAX_ENGINE_POWER)
-        right = MAX_ENGINE_POWER;
+      if ( left < 0 ) {
+        if (left < -MAX_ENGINE_POWER)
+          left = -MAX_ENGINE_POWER;
+        else if ( left > -MIN_ENGINE_POWER )
+          left = -MIN_ENGINE_POWER;
+      } else {
+        if ( left > MAX_ENGINE_POWER )
+          left = MAX_ENGINE_POWER;
+        else if ( left < MIN_ENGINE_POWER )
+          left = MIN_ENGINE_POWER;
+      }
+      if ( right < 0 ) {
+        if ( right < -MAX_ENGINE_POWER )
+          right = -MAX_ENGINE_POWER;
+        else if ( right > -MIN_ENGINE_POWER )
+          right = -MIN_ENGINE_POWER;
+      } else {
+        if ( right > MAX_ENGINE_POWER )
+          right = MAX_ENGINE_POWER;
+        else if ( right < MIN_ENGINE_POWER )
+          right = MIN_ENGINE_POWER;
+      }
       go(left,right);
     } else {
       panLoop.update(panOffset);
