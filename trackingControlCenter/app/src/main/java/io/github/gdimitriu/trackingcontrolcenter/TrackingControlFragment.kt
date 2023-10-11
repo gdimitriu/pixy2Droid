@@ -115,15 +115,41 @@ class TrackingControlFragment : Fragment() {
                     }
                 }
                 if (trackingSettingsViewModel.isChangedEnginePan) {
-                    if (sendOneWayCommandToDroid("E#\n")) {
-                        Log.d(TAG, "Send Engine Pan ${trackingSettingsViewModel.currentEnginePanStatus}")
-                        trackingSettingsViewModel.isChangedEnginePan = false
+                    if ( trackingSettingsViewModel.currentEnginePanStatus ) {
+                        if (sendOneWayCommandToDroid("E1#\n")) {
+                            Log.d(
+                                TAG,
+                                "Send Engine Pan ${trackingSettingsViewModel.currentEnginePanStatus}"
+                            )
+                            trackingSettingsViewModel.isChangedEnginePan = false
+                        }
+                    } else {
+                        if (sendOneWayCommandToDroid("E0#\n")) {
+                            Log.d(
+                                TAG,
+                                "Send Engine Pan ${trackingSettingsViewModel.currentEnginePanStatus}"
+                            )
+                            trackingSettingsViewModel.isChangedEnginePan = false
+                        }
                     }
                 }
                 if (trackingSettingsViewModel.isChangedLamp) {
-                    if (sendOneWayCommandToDroid("L#\n")) {
-                        Log.d(TAG, "Send Lamp ${trackingSettingsViewModel.currentEnginePanStatus}")
-                        trackingSettingsViewModel.isChangedLamp = false
+                    if ( trackingSettingsViewModel.currentLampStatus ) {
+                        if (sendOneWayCommandToDroid("L1#\n")) {
+                            Log.d(
+                                TAG,
+                                "Send Lamp ${trackingSettingsViewModel.currentLampStatus}"
+                            )
+                            trackingSettingsViewModel.isChangedLamp = false
+                        }
+                    } else {
+                        if (sendOneWayCommandToDroid("L0#\n")) {
+                            Log.d(
+                                TAG,
+                                "Send Lamp ${trackingSettingsViewModel.currentLampStatus}"
+                            )
+                            trackingSettingsViewModel.isChangedLamp = false
+                        }
                     }
                 }
             }
