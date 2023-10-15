@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">automoveControlCenter</string>
+    <string name="automove_ble_name">Name</string>
+    <string name="automove_ble_mac">MAC</string>
+    <string name="Kp_name_text">Kp</string>
+    <string name="Kd_name_text">Kd</string>
+    <string name="Ki_name_text">Ki</string>
+    <string name="automove_connection_menu">Automove connection BLE</string>
+    <string name="automove_connection_ble">Connect to</string>
+    <string name="droid_autocalibration">Autocalibration</string>
+    <string name="droid_disconnect">Disconnect</string>
+    <string name="droid_deploy">Deploy</string>
+    <string name="droid_load">Load</string>
+    <string name="droid_stop">Stop</string>
+    <string name="droid_start">Start</string>
+    <string name="lampOnOf">Lamp off/on</string>
+    <string name="line_barcode">Line/Barcode</string>
+    <string name="forward_barcode_text">Forward Barcode</string>
+    <string name="backward_barcode_text">Backward Barcode</string>
+    <string name="left_barcode_text">Left Barcode</string>
+    <string name="right_barcode_text">Right Barcode</string>
+    <string name="stop_barcode_text">Stop Barcode</string>
+    <string name="currentPower_name_text">Power</string>
+    <string name="turn90_name_text">Turn 90 ms</string>
+</resources>

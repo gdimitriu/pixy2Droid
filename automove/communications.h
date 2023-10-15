@@ -22,7 +22,7 @@
 
 #include <NeoSWSerial.h>
 
-#define BLE_DEBUG_MODE true
+//#define BLE_DEBUG_MODE true
 
 extern NeoSWSerial BTSerial;
 
