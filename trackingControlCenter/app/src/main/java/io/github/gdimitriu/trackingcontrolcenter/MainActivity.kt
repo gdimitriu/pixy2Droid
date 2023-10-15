@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.d(TAG, "TrackingConnectionFragment")
         return when (item.itemId) {
-            R.id.miniarm_connection_ble -> {
+            R.id.tracking_connection_ble -> {
                 val fragment =
                     TrackingConnectionBleFragment.newInstance()
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)

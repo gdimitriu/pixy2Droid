@@ -1,6 +1,6 @@
 /*
   Droid which recognize barcodes and move accordingly.
-  Copyright 2019 Gabriel Dimitriu
+  Copyright 2022 Gabriel Dimitriu
 
   This file is part of pixy2Droid
 

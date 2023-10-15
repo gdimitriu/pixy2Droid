@@ -26,13 +26,75 @@
 bool autoCalibrationDone = false;
 bool isStopped = true;
 
-bool lightsOn = false;
-
 static int8_t droidDirection = 0;
 
-unsigned int navigationType = 0;
+static unsigned int navigationType = 0;
+
+void setNavigationType(unsigned int type) {
+  navigationType = type;
+}
 
 Pixy2I2C pixy;
+
+static unsigned int leftCode = 0;  // code==0 is our left-turn sign
+static unsigned int rightCode = 5; // code==5 is our right-turn sign
+static unsigned int stopCode = 6; //code==6 is our stop sign for 10000 ms
+static unsigned int forwardCode = 4; //code==4 is our forward sign
+static unsigned int backwardCode = 3; //code==3 is our backward sign
+
+#define X_CENTER         (pixy.frameWidth/2)
+
+float Kp = -0.25;
+float Kd = 100.0;
+float Ki = 0.0;
+
+static volatile int32_t lastError = 0;
+static volatile int32_t integration = 0;
+
+void reset() {
+  lastError = 0;
+  integration = 0;
+}
+
+void setLeftCode(unsigned int value) {
+  leftCode = value;
+}
+
+void setRightCode(unsigned int value) {
+  rightCode = value;
+}
+
+void setStopCode(unsigned int value) {
+  stopCode = value;
+}
+
+void setForwardCode(unsigned int value) {
+  forwardCode = value;
+}
+
+void setBackwardCode(unsigned int value) {
+  backwardCode = value;
+}
+
+unsigned int getLeftCode() {
+  return leftCode;
+}
+
+unsigned int getRightCode() {
+  return rightCode;
+}
+
+unsigned int getStopCode() {
+  return stopCode;
+}
+
+unsigned int getForwardCode() {
+  return forwardCode;
+}
+
+unsigned int getBackwardCode() {
+  return backwardCode;
+}
 
 void initMove() {
   Wire.begin();
@@ -51,6 +113,10 @@ void initMove(int type) {
   navigationType = type;
   switch(type) {
     case 0:
+      pixy.setServos(380,010);
+      pixy.changeProg("line");
+      break;
+    case 1:
       pixy.setServos(380,010);
       pixy.changeProg("line");
       break;
@@ -108,21 +174,13 @@ void autocalibrationCamera() {
 
 static void moveBareCode() {
   int8_t res;
-  /*
-   * 0 is left
-   * 4 is forward
-   * 3 is bacward
-   * 5 is right
-   * 6 is delay
-   */
   // Get latest data from Pixy, including main vector, new intersections and new barcodes.
   res = pixy.line.getMainFeatures();
 
   if (res&LINE_BARCODE)
   {
     //pixy.line.barcodes->print();
-    // code==0 is our left-turn sign
-    if (pixy.line.barcodes->m_code==0) {
+    if ( pixy.line.barcodes->m_code == leftCode ) {
 #ifdef BLE_DEBUG_MODE      
       BTSerial.println("left");
 #endif      
@@ -144,9 +202,8 @@ static void moveBareCode() {
         BTSerial.println(droidDirection);
 #endif        
       }
-    }
-    // code==5 is our right-turn sign
-    else if (pixy.line.barcodes->m_code==5) {
+    }    
+    else if ( pixy.line.barcodes->m_code == rightCode ) {
 #ifdef BLE_DEBUG_MODE      
       BTSerial.println("right");
 #endif      
@@ -169,16 +226,15 @@ static void moveBareCode() {
 #endif        
       }
     }
-    //code==6 is our stop sign for 10000 ms
-    else if (pixy.line.barcodes->m_code==6) {
+    
+    else if ( pixy.line.barcodes->m_code == stopCode ) {
 #ifdef BLE_DEBUG_MODE      
       BTSerial.println("stop");
 #endif      
       go(0,0);
       delay(10000);
-    }
-    //code==4 is our forward sign
-    else if (pixy.line.barcodes->m_code==4) {
+    }    
+    else if ( pixy.line.barcodes->m_code == forwardCode ) {
 #ifdef BLE_DEBUG_MODE
       BTSerial.println("forward");
 #endif      
@@ -187,9 +243,8 @@ static void moveBareCode() {
       }
       droidDirection = 1;//forward
       go(currentPower,currentPower);
-    }
-    //code==3 is our backward sign
-    else if (pixy.line.barcodes->m_code==3) {
+    }    
+    else if ( pixy.line.barcodes->m_code == backwardCode ) {
 #ifdef BLE_DEBUG_MODE
       BTSerial.println("backward");
 #endif      
@@ -202,10 +257,98 @@ static void moveBareCode() {
   }
 }
 
+static void moveFollowLine() {
+  int8_t res;
+  int32_t error; 
+  int left, right;
+  char buf[96];
+  double command;
+  int32_t P,D;
+
+  // Get latest data from Pixy, including main vector, new intersections and new barcodes.
+  res = pixy.line.getMainFeatures();
+  
+  // If error or nothing detected, stop motors
+  if (res<=0) {
+    go(0, 0);
+    return;
+  }
+
+  // We found the vector...
+  if ( res & LINE_VECTOR ) {
+    // Calculate heading error with respect to m_x1, which is the far-end of the vector,
+    // the part of the vector we're heading toward.
+    error = (int32_t)pixy.line.vectors->m_x1 - (int32_t)X_CENTER;
+
+    integration += error;
+    P = error;
+    if (integration > 255)
+      integration = 255;
+    if (integration < -255)
+      integration = -255;
+    D = error - lastError;
+    if ( D > 255 )
+      D = 255;
+    if ( D < -255 )
+      D = -255;
+    lastError = error;
+    command = Kp*P+Ki*integration+Kd*D;
+    if ( error < 0 ) {
+      left = command;
+      right = -command;
+    } else {
+      left = -command;
+      right = command;
+    }
+
+    // If vector is heading away from us (arrow pointing up), things are normal.
+    if ( pixy.line.vectors->m_y0 > pixy.line.vectors->m_y1 ) {
+      if ( pixy.line.vectors->m_flags & LINE_FLAG_INTERSECTION_PRESENT ) {
+        left += MAX_POWER_ENGINE/4;
+        right += MAX_POWER_ENGINE/4;
+      } else {
+        // otherwise, pedal to the metal!
+        left += MAX_POWER_ENGINE/2;
+        right += MAX_POWER_ENGINE/2;
+      }    
+    } else {
+      // If the vector is pointing down, or down-ish, we need to go backwards to follow.
+      left -= MAX_POWER_ENGINE/2;
+      right -= MAX_POWER_ENGINE/2;  
+    }
+    if ( left > 0 ) {
+      if ( left < MIN_POWER_ENGINE )
+        left = MIN_POWER_ENGINE;
+      else if ( left > MAX_POWER_ENGINE )
+        left = MAX_POWER_ENGINE;
+    } else {
+      if ( left > -MIN_POWER_ENGINE )
+        left = -MIN_POWER_ENGINE;
+      else if ( left < -MAX_POWER_ENGINE )
+        left = -MAX_POWER_ENGINE;
+    }
+    if ( right > 0 ) {
+      if ( right < MIN_POWER_ENGINE )
+        right = MIN_POWER_ENGINE;
+      else if ( right > MAX_POWER_ENGINE )
+        right = MAX_POWER_ENGINE;     
+    } else {
+      if ( right > -MIN_POWER_ENGINE )
+        right = -MIN_POWER_ENGINE;
+      else if ( right < -MAX_POWER_ENGINE )
+        right = -MAX_POWER_ENGINE;
+    }
+    go(left, right);
+  }
+}
+
 void move() {
   switch(navigationType) {
     case 0:
       moveBareCode();
+      break;
+    case 1:
+      moveFollowLine();
       break;
   }
 }

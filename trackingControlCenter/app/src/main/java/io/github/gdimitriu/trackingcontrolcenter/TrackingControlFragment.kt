@@ -10,15 +10,13 @@ import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
-import android.widget.SeekBar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.google.android.material.switchmaterial.SwitchMaterial
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import com.google.android.material.switchmaterial.SwitchMaterial
-import java.lang.Exception
 
 private const val TAG = "TrackingControl"
 

@@ -7,7 +7,7 @@
         app:showAsAction="ifRoom|withText">
         <menu>
         <item
-            android:id="@+id/miniarm_connection_ble"
+            android:id="@+id/tracking_connection_ble"
             android:icon="@drawable/ic_launcher_foreground"
             android:title="@string/tracking_connection_ble"
             app:showAsAction="ifRoom|withText" />

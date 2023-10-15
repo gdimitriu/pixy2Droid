@@ -35,6 +35,7 @@ static bool isValidInput;
 static char inData[20]; // Allocate some space for the string
 static char inChar; // Where to store the character read
 static byte index = 0; // Index into array; where to store the character
+static char outData[20];
 
 NeoSWSerial BTSerial(RxD, TxD);
 
@@ -49,11 +50,8 @@ void initCommunications() {
 }
 
 static void makeCleanup() {
-  BTSerial.println("OK");
-  BTSerial.flush();
-  for (index = 0; index < 20; index++) {
-    inData[index] = '\0';
-  }
+  memset(inData, 0, sizeof(char) * 20);
+  memset(outData, 0, sizeof(char) * 20);
   index = 0;
   inChar ='0';
 }
@@ -61,13 +59,18 @@ static void makeCleanup() {
 void printMenuOnBLE() {
   BTSerial.println("h# print menu");
   BTSerial.println("s# stop/start");
-  BTSerial.println("l# lights on");
+  BTSerial.println("l1/0# lights on/off");
   BTSerial.println("a# autocalibration");
   BTSerial.println("L# left with turn90 delay");
   BTSerial.println("R# right with turn90 delay");
   BTSerial.println("txxx# set turn90");
+  BTSerial.println("t# get turn90");
   BTSerial.println("sxxx,xxx# set servo tilt,pan");
   BTSerial.println("vxxx# set the current power");
+  BTSerial.println("v# get the current power");
+  BTSerial.println("m[b/l]# set barecode or line");
+  BTSerial.println("S[l,r,s,f,b] set code for barcodes");
+  BTSerial.println("G[l,r,s,f,b] get code for barcodes");
 }
 
 
@@ -82,15 +85,30 @@ static boolean isValidNumber(char *data)
    return true;
 }
 
+static void sendBLEOK() {
+  char buff[10];
+   for (int i = 0; i < 10; i++) {
+     buff[i] = '\0';
+  }
+  sprintf(buff,"OK\r\n");
+  BTSerial.print(buff);
+  BTSerial.flush();
+}
+
 static void makeMove(char *data) {
   char *realData = data;
   if (strlen(realData) > 0) {
     realData[strlen(realData) -1] = '\0';
   } else {
+    sendBLEOK();
     return;
   }
-  if (strlen(realData) == 1) {
-    if (realData[0] == 's') {
+  if ( strlen(realData) == 1 ) {
+    char buff[10];
+    for (int i = 0; i < 10; i++) {
+      buff[i] = '\0';
+    }
+    if ( realData[0] == 's' ) {
       isStopped = !isStopped;
 #ifdef BLE_DEBUG_MODE
       if (isStopped)
@@ -98,30 +116,48 @@ static void makeMove(char *data) {
       else
         BTSerial.println("start again");
 #endif
+      if ( !isStopped ) {
+        reset();
+      }
       go(0,0);
-    } else if (realData[0] == 'l') {
-      lightsOn = !lightsOn;
-      if (lightsOn)
-        pixy.setLamp(1, 1);
-      else
-        pixy.setLamp(0, 0);
-    } else if (realData[0] == 'a') {
+    } else if ( realData[0] == 'a' ) {
       autocalibrationCamera();
-    } else if (realData[0] == 'L') {
+    } else if ( realData[0] == 'L' ) {
       go(-currentPower,currentPower);
       delay(turn90);
       go(0,0);
-    } else if (realData[0] == 'R') {
+    } else if ( realData[0] == 'R' ) {
       go(currentPower,-currentPower);
       delay(turn90);
       go(0,0);
-    } else if (realData[0] == 'h') {
+    } else if ( realData[0] == 'h' ) {
       printMenuOnBLE();
+    } else if ( realData[0] == 'D' ) {
+      BTSerial.print(Kd);
+      BTSerial.flush();
+      return;
+    } else if ( realData[0] == 'I' ) {
+      BTSerial.println(Ki);
+      BTSerial.flush();
+      return;
+    } else if ( realData[0] == 'P' ) {
+      BTSerial.println(Kp);
+      BTSerial.flush();
+      return;
+    } else if ( realData[0] == 'v' ) {
+      BTSerial.println(currentPower);
+      BTSerial.flush();
+      return;
+    } else if ( realData[0] == 't' ) {
+      BTSerial.println(turn90);
+      BTSerial.flush();
+      return;
     }
   } else {
     if (realData[0] == 'v') {
         realData++;
         if (!isValidNumber(realData)) {
+          sendBLEOK();
           return;
         }
         if (atoi(realData) > 0 && atoi(realData) < 256)
@@ -132,6 +168,7 @@ static void makeMove(char *data) {
 #endif        
         realData++;
         if (!isValidNumber(realData)) {
+          sendBLEOK();
           return;
         }
         if (atoi(realData) > 0) {
@@ -141,6 +178,7 @@ static void makeMove(char *data) {
 #endif          
         } else {
           makeCleanup();
+          sendBLEOK();
           return;
         }
     } else if (realData[0] == 's') {
@@ -171,8 +209,119 @@ static void makeMove(char *data) {
       }
       int rotateData = atoi(buf);
       pixy.setServos(moveData,rotateData);
+    } else if (realData[0] == 'S') {      
+      realData++;
+      if ( realData[0] == 'l' ) {
+        realData++;
+        if (!isValidNumber(realData)) {
+          sendBLEOK();
+          return;
+        }
+        setLeftCode(atoi(realData));
+      } else if ( realData[0] == 'r' ) {
+        realData++;
+        if (!isValidNumber(realData)) {
+          sendBLEOK();
+          return;
+        }
+        setRightCode(atoi(realData));
+      } else if ( realData[0] == 's' ) {
+        realData++;
+        if (!isValidNumber(realData)) {
+          sendBLEOK();
+          return;
+        }
+        setStopCode(atoi(realData));
+      } else if ( realData[0] == 'f' ) {
+        realData++;
+        if (!isValidNumber(realData)) {
+          sendBLEOK();
+          return;
+        }
+        setForwardCode(atoi(realData));
+      } else if ( realData[0] == 'b' ) {
+        realData++;
+        if (!isValidNumber(realData)) {
+          sendBLEOK();
+          return;
+        }
+        setBackwardCode(atoi(realData));
+      } else {
+        BTSerial.print("0\r\n");
+        BTSerial.flush();
+        return;
+      }
+    } else if (realData[0] == 'G') {
+      memset(outData, 0, sizeof(char) * 20);
+      realData++;
+      if ( realData[0] == 'l' ) {
+        sprintf(outData,"%i\r\n", getLeftCode());
+        BTSerial.print(outData);
+        BTSerial.flush();
+        return;
+      } else if ( realData[0] == 'r' ) {
+        sprintf(outData,"%i\r\n", getRightCode());
+        BTSerial.print(outData);
+        BTSerial.flush();
+        return;
+      } else if ( realData[0] == 's' ) {
+        sprintf(outData,"%i\r\n", getStopCode());
+        BTSerial.print(outData);
+        BTSerial.flush();
+        return;
+      } else if ( realData[0] == 'f' ) {
+        sprintf(outData,"%i\r\n", getForwardCode());
+        BTSerial.print(outData);
+        BTSerial.flush();
+        return;
+      } else if ( realData[0] == 'b' ) {
+        sprintf(outData,"%i\r\n", getBackwardCode());
+        BTSerial.print(outData);
+        BTSerial.flush();
+        return;
+      } else {
+        sprintf(outData, "0\r\n");
+        BTSerial.print(outData);
+        BTSerial.flush();
+        return;
+      }
+    } else if ( realData[0] == 'm') {
+      realData++;
+      if ( realData[0] == 'b' ) {
+        setNavigationType(0);
+      } else if ( realData[1] == 'l' ) {
+        setNavigationType(1);
+      }
+    } else if ( realData[0] == 'D' ) {
+      realData++;
+      if (!isValidNumber(realData)) {
+        sendBLEOK();
+        return;
+      }
+      Kd = atof(realData);
+    } else if ( realData[0] == 'I' ) {
+      realData++;
+      if (!isValidNumber(realData)) {
+        sendBLEOK();
+        return;
+      }
+      Ki = atof(realData);
+    } else if ( realData[0] == 'P' ) {
+      realData++;
+      if (!isValidNumber(realData)) {
+        sendBLEOK();
+        return;
+      }
+      Kp = atof(realData);
+    }  else if ( realData[0] == 'l' ) {
+      realData++;
+      if ( realData[0] == '1' )
+        pixy.setLamp(1, 1);
+      else if ( realData[0] == '0' )
+        pixy.setLamp(0, 0);
     }
   }
+  sendBLEOK();
 }
 
 

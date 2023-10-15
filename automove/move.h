@@ -30,12 +30,29 @@ extern Pixy2I2C pixy;
 extern bool autoCalibrationDone;
 extern bool isStopped;
 
-extern bool lightsOn;
-extern unsigned int navigationType;
 void initMove();
+
+void setNavigationType(unsigned int type);
 
 void move();
 
 void autocalibrationCamera();
 
+void setLeftCode(unsigned int value);
+void setRightCode(unsigned int value);
+void setStopCode(unsigned int value);
+void setForwardCode(unsigned int value);
+void setBackwardCode(unsigned int value);
+
+unsigned int getLeftCode();
+unsigned int getRightCode();
+unsigned int getStopCode();
+unsigned int getForwardCode();
+unsigned int getBackwardCode();
+
+extern float Kp;
+extern float Kd;
+extern float Ki;
+
+void reset();
 #endif

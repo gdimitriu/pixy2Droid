@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/droid_control"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/droid_commands"
+        android:layout_width="437dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/droid_settings">
+
+        <Button
+            android:id="@+id/droid_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/droid_start"
+            app:layout_constraintBottom_toTopOf="@id/droid_load"
+            app:layout_constraintEnd_toStartOf="@id/droid_autocalibration"
+            app:layout_constraintStart_toStartOf="@id/droid_commands"
+            app:layout_constraintTop_toTopOf="@id/droid_commands" />
+
+        <Button
+            android:id="@+id/droid_autocalibration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/droid_autocalibration"
+            app:layout_constraintBottom_toTopOf="@id/droid_deploy"
+            app:layout_constraintEnd_toStartOf="@id/droid_stop"
+            app:layout_constraintStart_toEndOf="@id/droid_start"
+            app:layout_constraintTop_toTopOf="@id/droid_commands" />
+
+        <Button
+            android:id="@+id/droid_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/droid_stop"
+            app:layout_constraintBottom_toTopOf="@id/droid_disconnect"
+            app:layout_constraintEnd_toEndOf="@id/droid_commands"
+            app:layout_constraintStart_toEndOf="@id/droid_autocalibration"
+            app:layout_constraintTop_toTopOf="@id/droid_commands" />
+
+        <Button
+            android:id="@+id/droid_load"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/droid_load"
+            app:layout_constraintBottom_toBottomOf="@id/droid_commands"
+            app:layout_constraintEnd_toStartOf="@id/droid_deploy"
+            app:layout_constraintStart_toStartOf="@id/droid_commands"
+            app:layout_constraintTop_toBottomOf="@id/droid_start" />
+
+        <Button
+            android:id="@+id/droid_deploy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/droid_deploy"
+            app:layout_constraintBottom_toBottomOf="@id/droid_commands"
+            app:layout_constraintEnd_toStartOf="@id/droid_disconnect"
+            app:layout_constraintStart_toEndOf="@id/droid_load"
+            app:layout_constraintTop_toBottomOf="@id/droid_autocalibration" />
+
+        <Button
+            android:id="@+id/droid_disconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/droid_disconnect"
+            app:layout_constraintBottom_toBottomOf="@id/droid_commands"
+            app:layout_constraintEnd_toEndOf="@id/droid_commands"
+            app:layout_constraintStart_toEndOf="@id/droid_deploy"
+            app:layout_constraintTop_toBottomOf="@id/droid_stop" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/droid_settings"
+        android:layout_width="422dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/droid_commands"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/droidAllSettings">
+
+        <Switch
+            android:id="@+id/lampOnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lampOnOf"
+            app:layout_constraintBottom_toBottomOf="@id/droid_settings"
+            app:layout_constraintEnd_toStartOf="@id/barcode_line"
+            app:layout_constraintStart_toStartOf="@id/droid_settings"
+            app:layout_constraintTop_toTopOf="@id/droid_settings"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <Switch
+            android:id="@+id/barcode_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/line_barcode"
+            app:layout_constraintBottom_toBottomOf="@id/droid_settings"
+            app:layout_constraintEnd_toEndOf="@id/droid_settings"
+            app:layout_constraintStart_toEndOf="@id/lampOnOff"
+            app:layout_constraintTop_toTopOf="@id/droid_settings"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/droidAllSettings"
+        android:layout_width="448dp"
+        android:layout_height="532dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/droid_settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/barcode"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_BottomOf="@id/droidAllSettings"
+            app:layout_constraintEnd_StartOf="@id/line_follow"
+            app:layout_constraintStart_StartOf="@id/droidAllSettings"
+            app:layout_constraintTop_toTopOf="@id/droidAllSettings">
+            <!-- forward barcode -->
+            <LinearLayout
+                android:id="@+id/forward_barcode"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/backward_barcode"
+                app:layout_constraintEnd_toEndOf="@id/barcode"
+                app:layout_constraintStart_toStartOf="@id/barcode"
+                app:layout_constraintTop_toTopOf="@id/barcode">
+
+                <EditText
+                    android:id="@+id/forwardbarcodeText"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:editable="false"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="24dp"
+                    android:singleLine="true"
+                    android:text="@string/forward_barcode_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/forwardbarcodeData"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:editable="true"
+                    android:ems="5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <!-- backward barcode -->
+            <LinearLayout
+                android:id="@+id/backward_barcode"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/left_barcode"
+                app:layout_constraintEnd_toEndOf="@id/barcode"
+                app:layout_constraintStart_toStartOf="@id/barcode"
+                app:layout_constraintTop_toBottomOf="@id/forward_barcode">
+
+                <EditText
+                    android:id="@+id/backwardbarcodeText"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:editable="false"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="24dp"
+                    android:singleLine="true"
+                    android:text="@string/backward_barcode_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/backwardbarcodeData"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:editable="true"
+                    android:ems="5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <!-- left barcode -->
+            <LinearLayout
+                android:id="@+id/left_barcode"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/right_barcode"
+                app:layout_constraintEnd_toEndOf="@id/barcode"
+                app:layout_constraintStart_toStartOf="@id/barcode"
+                app:layout_constraintTop_toBottomOf="@id/backward_barcode">
+
+                <EditText
+                    android:id="@+id/leftbarcodeText"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:editable="false"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="24dp"
+                    android:singleLine="true"
+                    android:text="@string/left_barcode_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/leftbarcodeData"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:editable="true"
+                    android:ems="5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <!-- right barcode -->
+            <LinearLayout
+                android:id="@+id/right_barcode"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/stop_barcode"
+                app:layout_constraintEnd_toEndOf="@id/barcode"
+                app:layout_constraintStart_toStartOf="@id/barcode"
+                app:layout_constraintTop_toBottomOf="@id/left_barcode">
+
+                <EditText
+                    android:id="@+id/rightbarcodeText"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:editable="false"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="24dp"
+                    android:singleLine="true"
+                    android:text="@string/right_barcode_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/rightbarcodeData"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:editable="true"
+                    android:ems="5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <!-- stop barcode -->
+            <LinearLayout
+                android:id="@+id/stop_barcode"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/barcode"
+                app:layout_constraintEnd_toEndOf="@id/barcode"
+                app:layout_constraintStart_toStartOf="@id/barcode"
+                app:layout_constraintTop_toBottomOf="@id/right_barcode">
+
+                <EditText
+                    android:id="@+id/stopbarcodeText"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:editable="false"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="24dp"
+                    android:singleLine="true"
+                    android:text="@string/stop_barcode_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/stopbarcodeData"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:editable="true"
+                    android:ems="5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/line_follow"
+            android:layout_width="178dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/droidAllSettings"
+            app:layout_constraintEnd_toEndOf="@id/droidAllSettings"
+            app:layout_constraintStart_toEndOf="@id/barcode"
+            app:layout_constraintTop_toTopOf="@id/droidAllSettings">
+            <!-- Kp -->
+            <!-- Kd -->
+            <LinearLayout
+                android:id="@+id/Kp_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/Kd_data"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/KpText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:editable="false"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="@string/Kp_name_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/KpData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:editable="true"
+                    android:ems="5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Kd_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/Ki_data"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/Kp_data">
+
+                <EditText
+                    android:id="@+id/KdText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:editable="false"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="@string/Kd_name_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/KdData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:editable="true"
+                    android:ems="5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <!-- Ki -->
+            <LinearLayout
+                android:id="@+id/Ki_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/Kd_data"
+                app:layout_constraintBottom_toTopOf="@id/current_Power">
+
+                <EditText
+                    android:id="@+id/KiText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:editable="false"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="@string/Ki_name_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/KiData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:editable="true"
+                    android:ems="5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!-- current power -->
+            <LinearLayout
+                android:id="@+id/current_Power"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/Ki_data"
+                app:layout_constraintBottom_toTopOf="@id/turn_90">
+
+                <EditText
+                    android:id="@+id/currentPowerText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:editable="false"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="@string/currentPower_name_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/currentPowerData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:editable="true"
+                    android:ems="5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <!-- current power -->
+            <LinearLayout
+                android:id="@+id/turn_90"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/current_Power">
+
+                <EditText
+                    android:id="@+id/turn90_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:contextClickable="false"
+                    android:editable="false"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="@string/turn90_name_text"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/turn90Data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:editable="true"
+                    android:ems="5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

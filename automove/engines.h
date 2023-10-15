@@ -22,6 +22,8 @@
 
 #define MAX_POWER_ENGINE 255
 
+#define MIN_POWER_ENGINE 150
+
 void initializetEngines();
 
 void go(int speedLeft, int speedRight);
