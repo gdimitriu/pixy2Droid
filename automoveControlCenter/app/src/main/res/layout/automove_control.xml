@@ -124,9 +124,9 @@
             android:id="@+id/barcode"
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_BottomOf="@id/droidAllSettings"
-            app:layout_constraintEnd_StartOf="@id/line_follow"
-            app:layout_constraintStart_StartOf="@id/droidAllSettings"
+            app:layout_constraintBottom_toBottomOf="@id/droidAllSettings"
+            app:layout_constraintEnd_toStartOf="@id/line_follow"
+            app:layout_constraintStart_toStartOf="@id/droidAllSettings"
             app:layout_constraintTop_toTopOf="@id/droidAllSettings">
             <!-- forward barcode -->
             <LinearLayout
