@@ -71,7 +71,7 @@ class AutomoveControlFragment : Fragment() {
         startButton.setOnTouchListener { view, motionEvent ->
             val event = motionEvent as MotionEvent
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-                if (sendOneWayCommandToDroid("s#\n")) {
+                if (sendOneWayCommandToDroid("S#\n")) {
                     Log.d(TAG, "Start")
                 }
             }
