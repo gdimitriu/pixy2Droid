@@ -30,10 +30,6 @@ static int8_t droidDirection = 0;
 
 static unsigned int navigationType = 0;
 
-void setNavigationType(unsigned int type) {
-  navigationType = type;
-}
-
 Pixy2I2C pixy;
 
 static unsigned int leftCode = 0;  // code==0 is our left-turn sign
@@ -109,7 +105,7 @@ void initMove() {
   pixy.setLamp(0, 0);
 }
 
-void initMove(int type) {
+void initMove(unsigned int type) {
   navigationType = type;
   switch(type) {
     case 0:

@@ -58,7 +58,8 @@ static void makeCleanup() {
 
 void printMenuOnBLE() {
   BTSerial.println("h# print menu");
-  BTSerial.println("s# stop/start");
+  BTSerial.println("s# stop");
+  BTSerial.println("S# start");
   BTSerial.println("l1/0# lights on/off");
   BTSerial.println("a# autocalibration");
   BTSerial.println("L# left with turn90 delay");
@@ -109,17 +110,11 @@ static void makeMove(char *data) {
       buff[i] = '\0';
     }
     if ( realData[0] == 's' ) {
-      isStopped = !isStopped;
-#ifdef BLE_DEBUG_MODE
-      if (isStopped)
-        BTSerial.println("stop");
-      else
-        BTSerial.println("start again");
-#endif
-      if ( !isStopped ) {
-        reset();
-      }
+      isStopped = true;
       go(0,0);
+    } else if ( realData[0] == 'S' ) {
+      isStopped = false;
+      reset();
     } else if ( realData[0] == 'a' ) {
       autocalibrationCamera();
     } else if ( realData[0] == 'L' ) {
@@ -133,7 +128,7 @@ static void makeMove(char *data) {
     } else if ( realData[0] == 'h' ) {
       printMenuOnBLE();
     } else if ( realData[0] == 'D' ) {
-      BTSerial.print(Kd);
+      BTSerial.println(Kd);
       BTSerial.flush();
       return;
     } else if ( realData[0] == 'I' ) {
@@ -288,9 +283,9 @@ static void makeMove(char *data) {
     } else if ( realData[0] == 'm') {
       realData++;
       if ( realData[0] == 'b' ) {
-        setNavigationType(0);
+        initMove(0);
       } else if ( realData[1] == 'l' ) {
-        setNavigationType(1);
+        initMove(1);
       }
     } else if ( realData[0] == 'D' ) {
       realData++;

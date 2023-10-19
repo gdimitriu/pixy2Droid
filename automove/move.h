@@ -32,7 +32,7 @@ extern bool isStopped;
 
 void initMove();
 
-void setNavigationType(unsigned int type);
+void initMove(unsigned int type);
 
 void move();
 
