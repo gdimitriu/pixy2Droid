@@ -60,7 +60,7 @@ void printMenuOnBLE() {
   BTSerial.println("h# print menu");
   BTSerial.println("s# stop");
   BTSerial.println("S# start");
-  BTSerial.println("l1/0# lights on/off");
+  BTSerial.println("l[1/0]# lights on/off");
   BTSerial.println("a# autocalibration");
   BTSerial.println("L# left with turn90 delay");
   BTSerial.println("R# right with turn90 delay");

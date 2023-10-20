@@ -22,9 +22,9 @@ T# tracking on
 
 t# tracking off
 
-L# lamp on/off
+L1/0# lamp on/off
 
-E# engine pan tracking on/off
+E1/0# engine pan tracking on/off
 
 pxx# horizontal position of camera
 
@@ -46,7 +46,7 @@ Android application:
 
 ## AutoMove
 
-Pixy2 camera is used to read bar codes from the ground, those code instruct the droid how to move.
+Pixy2 camera is used to read bar codes from the ground, those code instruct the droid how to move, those could be overrided from app or ble commands.
 
 0 is left
 
@@ -62,9 +62,11 @@ Pixy2 camera is used to read bar codes from the ground, those code instruct the 
 
 h# print menu
 
-s# stop/start
+s# stop
 
-l# lights on
+S# start
+
+l1/0# lights on/off
 
 a# autocalibration
 
@@ -74,9 +76,21 @@ R# right with turn90 delay
 
 txxx# set turn90
 
+t# get turn90
+
 sxxx,xxx# set servo tilt,pan
 
 vxxx# set the current power
+
+v# get current power
+
+m[b/l]# set barcode or line
+
+S[l,r,s,f,b] set code for barcodes (left, right, stop 10s, forward, backward)
+
+G[l,r,s,f,b] get code for barcodes (left, right, stop 10s, forward, backward)
+
+![automove_droid](docs/automove_droid.jpg)
 
 ## PIXY2 links
 
