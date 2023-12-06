@@ -284,7 +284,7 @@ static void makeMove(char *data) {
       realData++;
       if ( realData[0] == 'b' ) {
         initMove(0);
-      } else if ( realData[1] == 'l' ) {
+      } else if ( realData[0] == 'l' ) {
         initMove(1);
       }
     } else if ( realData[0] == 'D' ) {
